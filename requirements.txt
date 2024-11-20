@@ -1,0 +1,7 @@
+groq
+typer
+python-dotenv
+openai==0.28
+colorama
+requests
+Pillow
