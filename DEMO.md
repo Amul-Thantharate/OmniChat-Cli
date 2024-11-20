@@ -6,7 +6,7 @@ This demo showcases the various features and capabilities of OmniChat CLI.
 
 ### OpenAI Chat (Default)
 ```bash
-$ python app/chat.py
+$ omenicli
 👤 Tell me a joke about programming
 🤖 Why do programmers prefer dark mode?
    Because light attracts bugs! 😄
@@ -14,7 +14,7 @@ $ python app/chat.py
 
 ### Groq Chat
 ```bash
-$ python app/chat.py --model-type groq
+$ omenicli --model-type groq
 👤 What's the difference between AI and ML?
 🤖 AI is like having a smart assistant who can think and make decisions,
    while ML is teaching that assistant through examples and experience.
@@ -24,7 +24,7 @@ $ python app/chat.py --model-type groq
 
 ### OpenAI with Streaming
 ```bash
-$ python app/chat.py --stream
+$ omenicli --stream
 👤 Write a short poem about coding
 🤖 In lines of code, we find our way
    Through logic gates day by day
@@ -34,7 +34,7 @@ $ python app/chat.py --stream
 
 ### Groq with Streaming
 ```bash
-$ python app/chat.py --model-type groq --stream
+$ omenicli --model-type groq --stream
 👤 Explain quantum computing
 🤖 [Response streams word by word in real-time...]
 ```
@@ -43,7 +43,7 @@ $ python app/chat.py --model-type groq --stream
 
 ### Basic Image Generation
 ```bash
-$ python app/chat.py --model-type image
+$ omenicli --model-type image
 👤 Create a cyberpunk city at night
 🤖 Generating image... Done! ✨
 📁 Saved as: generated_images/image_20240315_123456.png
@@ -51,7 +51,7 @@ $ python app/chat.py --model-type image
 
 ### Custom Save Location
 ```bash
-$ python app/chat.py --model-type image --image-dir my_artwork
+$ omenicli --model-type image --image-dir my_artwork
 👤 A futuristic space station
 🤖 Generating image... Done! ✨
 📁 Saved as: my_artwork/image_20240315_123789.png
@@ -61,99 +61,124 @@ $ python app/chat.py --model-type image --image-dir my_artwork
 
 ### Custom Temperature
 ```bash
-$ python app/chat.py --temperature 0.8
+$ omenicli --temperature 0.8
 👤 Generate a creative story
 🤖 [More creative and varied response due to higher temperature]
 ```
 
 ### Custom Max Tokens
 ```bash
-$ python app/chat.py --max-tokens 2048
+$ omenicli --max-tokens 2048
 👤 Write a detailed analysis
 🤖 [Longer, more detailed response]
 ```
 
 ### Custom Model Selection
 ```bash
-$ python app/chat.py --openai-model gpt-3.5-turbo
+$ omenicli --openai-model gpt-3.5-turbo
 👤 Explain blockchain
 🤖 [Response from specified model]
 ```
 
 ## 5. Chat History Management 📝
 
-### Save Chat History (Default Location)
+### Basic History Saving
 ```bash
-$ python app/chat.py --save
+$ omenicli --save
 👤 What is quantum entanglement?
-🤖 [Response saved to chat_history/chat_openai_20240315_123456.json]
+🤖 [Detailed explanation about quantum entanglement]
+Enter path to save chat history (press Enter for default): 
+Enter filename for chat history (press Enter for default timestamp): quantum_basics
+💾 Chat history saved to: chat_history/quantum_basics.json
 ```
 
-### Custom Save Location
+### Custom Directory and Filename
 ```bash
-$ python app/chat.py --save
-Save chat history to (press Enter for default): physics/quantum_chat.json
+$ omenicli --save
 👤 Explain string theory
-🤖 [Response saved to physics/quantum_chat.json]
+🤖 [Detailed explanation about string theory]
+Enter path to save chat history (press Enter for default): physics/quantum
+Enter filename for chat history (press Enter for default timestamp): string_theory_explained
+💾 Chat history saved to: physics/quantum/string_theory_explained.json
+```
+
+### Project-Based Organization
+```bash
+$ omenicli --save
+👤 How do neural networks work?
+🤖 [Detailed explanation about neural networks]
+Enter path to save chat history (press Enter for default): ai_learning
+Enter filename for chat history (press Enter for default timestamp): neural_networks_101
+💾 Chat history saved to: ai_learning/neural_networks_101.json
 ```
 
 ## 6. Combined Features 🌟
 
 ### Image Generation with History
 ```bash
-$ python app/chat.py --model-type image --save --image-dir art_portfolio
+$ omenicli --model-type image --save --image-dir art_portfolio
 👤 Create a Renaissance-style portrait
 🤖 Generating image... Done! ✨
 📁 Image: art_portfolio/image_20240315_124567.png
-💾 Chat: chat_history/chat_image_20240315_124567.json
+Enter path to save chat history (press Enter for default): art_portfolio/conversations
+Enter filename for chat history (press Enter for default timestamp): renaissance_portrait
+💾 Chat history saved to: art_portfolio/conversations/renaissance_portrait.json
 ```
 
 ### Streaming Chat with Custom Settings
 ```bash
-$ python app/chat.py --stream --temperature 0.7 --max-tokens 1500
+$ omenicli --stream --temperature 0.7 --max-tokens 1500 --save
 👤 Write a sci-fi story opening
 🤖 [Streams creative response with custom parameters]
+Enter path to save chat history (press Enter for default): stories
+Enter filename for chat history (press Enter for default timestamp): scifi_story_draft1
+💾 Chat history saved to: stories/scifi_story_draft1.json
 ```
 
 ## 7. Error Handling Examples ⚠️
 
 ### Missing API Key
 ```bash
-$ python app/chat.py
+$ omenicli
 ❌ Error: OpenAI API key not found. Please set OPENAI_API_KEY environment variable.
 ```
 
 ### Invalid Model Type
 ```bash
-$ python app/chat.py --model-type invalid
+$ omenicli --model-type invalid
 ❌ Error: Invalid model type. Choose from: openai, groq, image
 ```
 
 ### Network Error
 ```bash
-$ python app/chat.py
+$ omenicli
 ❌ Error: Network connection failed. Please check your internet connection.
 ```
 
 ## 8. Interactive Features 🎮
 
-### Exit Command
+### Exit and Save
 ```bash
-$ python app/chat.py
+$ omenicli --save
+👤 What is the theory of relativity?
+🤖 [Detailed explanation about relativity]
 👤 exit
+Enter path to save chat history (press Enter for default): physics
+Enter filename for chat history (press Enter for default timestamp): relativity_explained
+💾 Chat history saved to: physics/relativity_explained.json
 🤖 Goodbye! Thanks for using OmniChat CLI! 👋
 ```
 
 ### Help Command
 ```bash
-$ python app/chat.py --help
+$ omenicli --help
 [Displays all available commands and options]
 ```
 
 ## 9. Multi-Turn Conversations 🔄
 
 ```bash
-$ python app/chat.py
+$ omenicli --save
 👤 What is Python?
 🤖 Python is a high-level programming language...
 
@@ -164,28 +189,28 @@ $ python app/chat.py
    3. Extensive libraries
    [...]
 
-👤 Show me a simple example
-🤖 Here's a simple Python hello world:
-   print("Hello, World!")
+👤 exit
+Enter path to save chat history (press Enter for default): programming/python
+Enter filename for chat history (press Enter for default timestamp): python_introduction
+💾 Chat history saved to: programming/python/python_introduction.json
 ```
 
 ## 10. Tips & Best Practices 💡
 
-1. **For Best Results:**
-   - Use clear, specific prompts
-   - Try different temperature settings
-   - Enable streaming for real-time feedback
-   - Save important conversations
+1. **Organizing Chat History**:
+   - Use descriptive filenames (e.g., `quantum_basics`, `neural_networks_101`)
+   - Create topic-based directories (e.g., `physics/`, `ai_learning/`)
+   - Include project names in paths (e.g., `project_x/research/`)
 
-2. **Image Generation:**
+2. **Image Generation**:
    - Be detailed in image descriptions
-   - Specify art styles when relevant
-   - Use custom directories for organization
+   - Use project-specific directories
+   - Combine with chat history for context
 
-3. **Chat History:**
-   - Use meaningful file names
-   - Organize by topic/project
-   - Review saved conversations for learning
+3. **Efficient Workflow**:
+   - Use streaming for long responses
+   - Save important conversations with meaningful names
+   - Organize files by topic and project
 
 ---
 

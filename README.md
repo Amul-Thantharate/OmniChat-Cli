@@ -12,7 +12,7 @@ A powerful command-line interface for interacting with AI models and generating 
 ### Core Features
 - 📡 Real-time streaming responses
 - 🌈 Colorful, emoji-enhanced interface
-- 💾 Chat history saving
+- 💾 Chat history saving with custom filenames
 - 📁 Custom save locations
 - ⚙️ Configurable parameters
   - Temperature control
@@ -29,7 +29,7 @@ A powerful command-line interface for interacting with AI models and generating 
 
 ## 🛠️ Prerequisites
 
-- Python 3.7+
+- Python 3.10+
 - Required API Keys:
   - OpenAI API key
   - Groq API key
@@ -41,27 +41,18 @@ A powerful command-line interface for interacting with AI models and generating 
 
 ## 📦 Installation
 
-1. Create and activate conda environment:
+1. Clone the repository:
 ```bash
-# Create new environment
-conda create -n omnichat python=3.10
-
-# Activate environment
-conda activate omnichat
+git clone https://github.com/Amul-Thantharate/OmniChat-Cli.git
+cd OmniChat-Cli
 ```
 
-2. Clone the repository:
+2. Install the package:
 ```bash
-git clone <repository-url>
-cd <repository-name>
+pip install -e .
 ```
 
-3. Install dependencies:
-```bash
-pip install -r requirements.txt
-```
-
-4. Configure API Keys:
+3. Configure API Keys:
 
 ### Method A: Environment Variables
 ```bash
@@ -95,44 +86,44 @@ APP_URL=your_image_generation_api_url
 
 1. Chat with OpenAI (Default):
 ```bash
-python app/chat.py
+omenicli
 ```
 
 2. Chat with Groq:
 ```bash
-python app/chat.py --model-type groq
+omenicli --model-type groq
 ```
 
 3. Generate Images:
 ```bash
-python app/chat.py --model-type image
+omenicli --model-type image
 ```
 
 ### Advanced Usage
 
 1. Stream Responses:
 ```bash
-python app/chat.py --stream
+omenicli --stream
 ```
 
 2. Custom Model Settings:
 ```bash
-python app/chat.py --temperature 0.7 --max-tokens 2048
+omenicli --temperature 0.7 --max-tokens 2048
 ```
 
 3. Save Chat History:
 ```bash
-python app/chat.py --save
+omenicli --save
 ```
 
 4. Custom Image Directory:
 ```bash
-python app/chat.py --model-type image --image-dir my_images
+omenicli --model-type image --image-dir my_images
 ```
 
 5. Combined Features:
 ```bash
-python app/chat.py --model-type image --save --image-dir my_images --stream
+omenicli --model-type image --save --image-dir my_images --stream
 ```
 
 ## 📚 Example
@@ -155,9 +146,11 @@ Refer to the [Example](DEMO.md) section.
 
 ### Chat History
 - Default Location: `chat_history/`
-- Format: JSON files with timestamps
-- Custom Locations: Use any path when prompted
-- Naming: `chat_[model-type]_[timestamp].json`
+- Format: JSON files
+- Custom Options:
+  - Directory: Enter custom path when prompted
+  - Filename: Enter custom name when prompted
+  - Default naming: `chat_[model-type]_[timestamp].json`
 
 ### Generated Images
 - Default Location: `generated_images/`
@@ -193,23 +186,14 @@ Feel free to:
    - Use "exit" to end the session
    - Try different temperatures for varied responses
    - Enable streaming for real-time responses
+   - Use custom filenames for better organization
 
 2. **Image Generation**:
    - Be specific in your prompts
    - Use custom directories for organization
    - Combine with chat history saving
 
-3. **History Management**:
-   - Use descriptive directory names
-   - Organize by date or project
-   - Review saved JSON files for conversation tracking
-
-
-## Thanks to:
-- [Groq](https://groq.com/)
-- [OpenAI](https://openai.com)
-- [Pillow](https://pillow.readthedocs.io/en/stable/)
-- [Requests](https://requests.readthedocs.io/en/latest/)
-- [Typer](https://typer.tiangolo.com/)
-- [Colorama](https://pypi.org/project/colorama/)
-
+3. **Chat History**:
+   - Use descriptive filenames
+   - Organize by project/topic
+   - Use custom paths for better file management
