@@ -14,3 +14,9 @@ public/
 *.pyc
 *.pyo
 *.py.class
+
+*.egg-info
+dist/
+build/
+*.egg
+*.whl

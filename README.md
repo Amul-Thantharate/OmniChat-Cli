@@ -37,7 +37,7 @@ A powerful command-line interface for interacting with AI models and generating 
 
 ##  🌟 Image Demo
 
-![Image Demo](Image/Image.png)
+![Image Demo](https://github.com/Amul-Thantharate/OmniChat-Cli/blob/master/Image/Image.png)
 
 ## 📦 Installation
 
@@ -127,7 +127,7 @@ omenicli --model-type image --save --image-dir my_images --stream
 ```
 
 ## 📚 Example
-Refer to the [Example](DEMO.md) section.
+Refer to the [Example](https://github.com/Amul-Thantharate/OmniChat-Cli/blob/master/DEMO.md) section.
 
 ## ⚙️ Configuration Options
 
@@ -178,7 +178,7 @@ Feel free to:
 - Report bugs
 
 ## 📝 License
-[MIT License](LICENSE)
+[MIT License](https://github.com/Amul-Thantharate/OmniChat-Cli/blob/master/LICENSE)
 
 ## 🔍 Tips & Tricks
 
