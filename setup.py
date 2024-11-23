@@ -12,7 +12,7 @@ except FileNotFoundError:
 
 setup(
     name='omenicli',
-    version='0.2',
+    version='0.3',
     author='Amul Thantharate',
     author_email='amulthantharate@gmail.com',
     license='MIT',

@@ -11,7 +11,7 @@ from datetime import datetime
 import requests
 from PIL import Image
 from io import BytesIO
-from fpdf import FPDF
+from fpdf import FPDF, XPos, YPos
 import markdown2
 from rich.markdown import Markdown
 from rich.console import Console
@@ -40,6 +40,7 @@ ASSISTANT = "🤖"
 app = typer.Typer()
 
 def save_chat_history(messages, model_type, save_path=None, custom_filename=None, export_format='json'):
+    # Handle save directory path
     if save_path:
         # Handle both file and directory paths
         if os.path.splitext(save_path)[1]:  # If path has extension, treat as file
@@ -48,35 +49,33 @@ def save_chat_history(messages, model_type, save_path=None, custom_filename=None
         else:  # Treat as directory
             save_dir = save_path
             if custom_filename:
-                # Add .json extension if not present
-                if not custom_filename.endswith('.json'):
-                    custom_filename += '.json'
+                # Add appropriate extension based on export format
+                if not custom_filename.endswith(f'.{export_format}'):
+                    custom_filename += f'.{export_format}'
                 filename = os.path.join(save_dir, custom_filename)
             else:
                 timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-                filename = os.path.join(save_dir, f"chat_{model_type}_{timestamp}.json")
+                filename = os.path.join(save_dir, f"chat_{model_type}_{timestamp}.{export_format}")
     else:
         # Default behavior: save in chat_history directory
         save_dir = "chat_history"
         if custom_filename:
-            # Add .json extension if not present
-            if not custom_filename.endswith('.json'):
-                custom_filename += '.json'
+            # Add appropriate extension based on export format
+            if not custom_filename.endswith(f'.{export_format}'):
+                custom_filename += f'.{export_format}'
             filename = os.path.join(save_dir, custom_filename)
         else:
             timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-            filename = os.path.join(save_dir, f"chat_{model_type}_{timestamp}.json")
+            filename = os.path.join(save_dir, f"chat_{model_type}_{timestamp}.{export_format}")
     
     # Create directory if it doesn't exist
     os.makedirs(save_dir, exist_ok=True)
     
     # Handle different export formats
     if export_format.lower() == 'pdf':
-        output_file = os.path.join(save_dir, f"{os.path.splitext(filename)[0]}.pdf")
-        return export_to_pdf(messages, output_file)
+        return export_to_pdf(messages, filename)
     elif export_format.lower() == 'markdown':
-        output_file = os.path.join(save_dir, f"{os.path.splitext(filename)[0]}.md")
-        return export_to_markdown(messages, output_file)
+        return export_to_markdown(messages, filename)
     else:  # default to JSON
         with open(filename, "w", encoding="utf-8") as f:
             json.dump(messages, f, indent=2, ensure_ascii=False)
@@ -110,21 +109,22 @@ def export_to_pdf(messages, output_file):
         
         # Title
         pdf.set_font('Helvetica', size=16)
-        pdf.cell(0, 10, 'Chat History', ln=True, align='C')
+        pdf.cell(0, 10, 'Chat History', align='C', new_x=XPos.LMARGIN, new_y=YPos.NEXT)
         pdf.set_font('Helvetica', size=10)
-        pdf.cell(0, 10, f"Generated on: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}", ln=True)
+        pdf.cell(0, 10, f"Generated on: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}", new_x=XPos.LMARGIN, new_y=YPos.NEXT)
         pdf.ln(10)
         
         # Content
         pdf.set_font('Helvetica', size=12)
         for msg in messages:
             role = msg.get('role', 'USER').upper()
-            icon = USER_ICON if role == 'USER' else ASSISTANT
+            # Replace emoji with text equivalents
+            icon = "[USER]" if role == 'USER' else "[ASSISTANT]"
             content = msg.get('content', '')
             
             # Role header
             pdf.set_text_color(0, 0, 255 if role == 'USER' else 128)
-            pdf.cell(0, 10, f"{icon} {role}:", ln=True)
+            pdf.cell(0, 10, f"{icon} {role}:", new_x=XPos.LMARGIN, new_y=YPos.NEXT)
             
             # Message content
             pdf.set_text_color(0, 0, 0)
@@ -232,6 +232,7 @@ def interactive_chat(
         
         elif model_type.lower() == "openai":
             try:
+                messages.append({"role": "user", "content": text})
                 if stream:
                     response = openai.ChatCompletion.create(
                         model=openai_model,
@@ -269,6 +270,7 @@ def interactive_chat(
 
         elif model_type.lower() == "groq":
             try:
+                messages.append({"role": "user", "content": text})
                 if stream:
                     completion = client.chat.completions.create(
                         model=groq_model,
