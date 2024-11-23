@@ -51,8 +51,8 @@ pip install omenicli
 
 ### From Source
 ```bash
-git clone https://github.com/Amul-Thantharate/OmniChat-Cli.git
-cd OmniChat-Cli
+git clone https://github.com/Amul-Thantharate/omenicli.git
+cd omenicli
 pip install -e .
 ```
 
@@ -131,7 +131,7 @@ omenicli --model-type image --save --image-dir my_images --stream
 ```
 
 ## 📚 Example
-Refer to the [Example](https://github.com/Amul-Thantharate/OmniChat-Cli/blob/master/DEMO.md) section.
+Refer to the [Example](https://github.com/Amul-Thantharate/omenicli/blob/master/DEMO.md) section.
 
 ## ⚙️ Configuration Options
 
@@ -183,7 +183,7 @@ Feel free to:
 - Report bugs
 
 ## 📝 License
-[MIT License](https://github.com/Amul-Thantharate/OmniChat-Cli/blob/master/LICENSE)
+[MIT License](https://github.com/Amul-Thantharate/omenicli/blob/master/LICENSE)
 
 ## 🔍 Tips & Tricks
 

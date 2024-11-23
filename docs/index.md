@@ -51,8 +51,8 @@ pip install omenicli
 
 ### From Source
 ```bash
-git clone https://github.com/yourusername/OmniChat.git
-cd OmniChat
+git clone https://github.com/Amul-Thantharate/omenicli.git
+cd omenicli
 pip install -r requirements.txt
 ```
 
@@ -188,7 +188,7 @@ We welcome contributions! Please see our [Contributing Guidelines](CONTRIBUTING.
 
 If you encounter any issues or need help, please:
 1. Check the FAQ section
-2. Search existing [GitHub Issues](https://github.com/yourusername/OmniChat/issues)
+2. Search existing [GitHub Issues](https://github.com/Amul-Thantharate/omenicli/issues)
 3. Create a new issue if needed
 
 ## License
