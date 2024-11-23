@@ -4,7 +4,7 @@ plugins:
 - jekyll-seo-tag
 
 title: OmniChat Documentation
-description: Documentation for OmniChat - A Unified Chat Platform
+description:  A powerful CLI tool that combines multiple AI models (OpenAI, Groq) for chat, image generation, and content creation. Features streaming responses, conversation history, and multi-format exports.
 show_downloads: true
 google_analytics:
 theme: jekyll-theme-midnight

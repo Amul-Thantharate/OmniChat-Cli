@@ -1,6 +1,6 @@
 # OmniChat CLI 🤖
 
-A powerful command-line interface for interacting with AI models and generating images. Features multiple AI providers, streaming responses, and a colorful interface.
+A powerful CLI tool that combines multiple AI models (OpenAI, Groq) for chat, image generation, and content creation. Features streaming responses, conversation history, and multi-format exports.
 
 ## ✨ Features
 
