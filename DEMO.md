@@ -175,7 +175,36 @@ $ omenicli --help
 [Displays all available commands and options]
 ```
 
-## 9. Multi-Turn Conversations 🔄
+## 9. Export Formats 📊
+
+### JSON Export (Default)
+```bash
+$ omenicli --save
+👤 Tell me about Python
+🤖 Python is a versatile programming language...
+👤 exit
+💾 Chat saved to: chat_history/chat_openai_20240323_145623.json
+```
+
+### PDF Export
+```bash
+$ omenicli --save --format pdf
+👤 What are the benefits of AI?
+🤖 AI offers numerous advantages...
+👤 exit
+💾 Chat saved to: chat_history/chat_openai_20240323_145712.pdf
+```
+
+### Markdown Export
+```bash
+$ omenicli --save --format markdown
+👤 Explain machine learning
+🤖 Machine learning is a subset of AI...
+👤 exit
+💾 Chat saved to: chat_history/chat_openai_20240323_145830.md
+```
+
+## 10. Multi-Turn Conversations 🔄
 
 ```bash
 $ omenicli --save
@@ -195,7 +224,7 @@ Enter filename for chat history (press Enter for default timestamp): python_intr
 💾 Chat history saved to: programming/python/python_introduction.json
 ```
 
-## 10. Tips & Best Practices 💡
+## 11. Tips & Best Practices 💡
 
 1. **Organizing Chat History**:
    - Use descriptive filenames (e.g., `quantum_basics`, `neural_networks_101`)

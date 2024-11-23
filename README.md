@@ -14,11 +14,16 @@ A powerful command-line interface for interacting with AI models and generating 
 - 🌈 Colorful, emoji-enhanced interface
 - 💾 Chat history saving with custom filenames
 - 📁 Custom save locations
+- 📊 Multiple export formats
+  - JSON (structured data)
+  - PDF (formatted document)
+  - Markdown (human-readable)
 - ⚙️ Configurable parameters
   - Temperature control
   - Token limits
   - Model selection
   - Response streaming
+  - Export format selection
 
 ### Interface
 - 👤 User messages in yellow
@@ -141,6 +146,7 @@ Refer to the [Example](https://github.com/Amul-Thantharate/OmniChat-Cli/blob/mas
 | --openai-model | -o | gpt-3.5-turbo | OpenAI model name |
 | --groq-model | -g | llama3-8b-8192 | Groq model name |
 | --image-dir | -i | generated_images | Directory to save generated images |
+| --export-format | -e | json | Export format (json/pdf/markdown) |
 
 ## 💾 Data Management
 
