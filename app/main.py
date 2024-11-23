@@ -81,26 +81,6 @@ def save_chat_history(messages, model_type, save_path=None, custom_filename=None
             json.dump(messages, f, indent=2, ensure_ascii=False)
         return filename
 
-def export_to_markdown(messages, output_file):
-    """Export chat history to a Markdown file."""
-    try:
-        with open(output_file, 'w', encoding='utf-8') as f:
-            f.write("# Chat History\n\n")
-            f.write(f"Generated on: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n\n")
-            
-            for msg in messages:
-                role = msg.get('role', 'USER').upper()
-                icon = USER_ICON if role == 'USER' else ASSISTANT
-                content = msg.get('content', '')
-                
-                f.write(f"### {icon} {role}\n\n")
-                f.write(f"{content}\n\n")
-                f.write("---\n\n")
-        
-        return output_file
-    except Exception as e:
-        raise Exception(f"Failed to export to Markdown: {str(e)}")
-
 def export_to_pdf(messages, output_file):
     """Export chat history to a PDF file."""
     try:
@@ -117,14 +97,15 @@ def export_to_pdf(messages, output_file):
         # Content
         pdf.set_font('Helvetica', size=12)
         for msg in messages:
-            role = msg.get('role', 'USER').upper()
-            # Replace emoji with text equivalents
-            icon = "[USER]" if role == 'USER' else "[ASSISTANT]"
+            role = msg.get('role', 'user').lower()
+            # Replace emoji with text equivalents and display in uppercase
+            display_role = role.upper()
+            icon = "[USER]" if role == "user" else "[ASSISTANT]"
             content = msg.get('content', '')
             
             # Role header
-            pdf.set_text_color(0, 0, 255 if role == 'USER' else 128)
-            pdf.cell(0, 10, f"{icon} {role}:", new_x=XPos.LMARGIN, new_y=YPos.NEXT)
+            pdf.set_text_color(0, 0, 255 if role == "user" else 128)
+            pdf.cell(0, 10, f"{icon} {display_role}:", new_x=XPos.LMARGIN, new_y=YPos.NEXT)
             
             # Message content
             pdf.set_text_color(0, 0, 0)
@@ -135,6 +116,28 @@ def export_to_pdf(messages, output_file):
         return output_file
     except Exception as e:
         raise Exception(f"Failed to export to PDF: {str(e)}")
+
+def export_to_markdown(messages, output_file):
+    """Export chat history to a Markdown file."""
+    try:
+        with open(output_file, 'w', encoding='utf-8') as f:
+            f.write("# Chat History\n\n")
+            f.write(f"Generated on: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n\n")
+            
+            for msg in messages:
+                role = msg.get('role', 'user').lower()
+                # Display role in uppercase but store as lowercase
+                display_role = role.upper()
+                icon = USER_ICON if role == "user" else ASSISTANT
+                content = msg.get('content', '')
+                
+                f.write(f"### {icon} {display_role}\n\n")
+                f.write(f"{content}\n\n")
+                f.write("---\n\n")
+        
+        return output_file
+    except Exception as e:
+        raise Exception(f"Failed to export to Markdown: {str(e)}")
 
 def generate_image(prompt: str, output_dir: str = "generated_images") -> str:
     """Generate an image from a text prompt"""
@@ -225,11 +228,14 @@ def interactive_chat(
                 output_file, elapsed_time = generate_image(text, output_dir=image_dir)
                 typer.echo(f"{Fore.GREEN}Image generated successfully in {elapsed_time:.2f} seconds!{Style.RESET_ALL}")
                 typer.echo(f"{Fore.CYAN}Saved as: {output_file}{Style.RESET_ALL}")
-                messages.append({"role": "USER", "content": f"Generated image with prompt: {text}"})
-                messages.append({"role": "ASSISTANT", "content": f"Image saved as: {output_file}"})
+                messages.append({"role": "user", "content": f"Generated image with prompt: {text}"})
+                messages.append({"role": "assistant", "content": f"Image saved as: {output_file}"})
+                # Reset text for next input
+                text = None
             except Exception as e:
                 typer.echo(f"{Fore.RED}Error generating image: {str(e)}{Style.RESET_ALL}")
-        
+                # Reset text on error
+                text = None
         elif model_type.lower() == "openai":
             try:
                 messages.append({"role": "user", "content": text})
@@ -241,7 +247,7 @@ def interactive_chat(
                         max_tokens=max_tokens,
                         stream=True,
                     )
-                    typer.echo(f"\n{Fore.BLUE}ASSISTANT: {Style.RESET_ALL}", nl=False)
+                    typer.echo(f"\n{Fore.BLUE}Assistant: {Style.RESET_ALL}", nl=False)
                     collected_content = []
                     for chunk in response:
                         if chunk.choices[0].delta.get("content"):
@@ -249,7 +255,7 @@ def interactive_chat(
                             collected_content.append(content)
                             typer.echo(content, nl=False)
                     typer.echo("\n")
-                    messages.append({"role": "ASSISTANT", "content": "".join(collected_content)})
+                    messages.append({"role": "assistant", "content": "".join(collected_content)})
                 else:
                     response = openai.ChatCompletion.create(
                         model=openai_model,
@@ -259,14 +265,18 @@ def interactive_chat(
                         stream=False,
                     )
                     content = response.choices[0].message.content
-                    typer.echo(f"\n{Fore.BLUE}ASSISTANT: {Style.RESET_ALL}" + content)
-                    messages.append({"role": "ASSISTANT", "content": content})
+                    typer.echo(f"\n{Fore.BLUE}Assistant: {Style.RESET_ALL}" + content)
+                    messages.append({"role": "assistant", "content": content})
+                # Reset text for next input
+                text = None
             except Exception as e:
                 typer.echo(f"{Fore.RED}Error with OpenAI API: {str(e)}{Style.RESET_ALL}")
                 if "invalid_api_key" in str(e).lower():
                     typer.echo(f"{Fore.RED}Please check your OpenAI API key.{Style.RESET_ALL}")
                 elif "rate_limit" in str(e).lower():
                     typer.echo(f"{Fore.RED}Rate limit exceeded. Please wait a moment before trying again.{Style.RESET_ALL}")
+                # Reset text on error
+                text = None
 
         elif model_type.lower() == "groq":
             try:
@@ -279,7 +289,7 @@ def interactive_chat(
                         max_tokens=max_tokens,
                         stream=True,
                     )
-                    typer.echo(f"\n{Fore.BLUE}ASSISTANT: {Style.RESET_ALL}", nl=False)
+                    typer.echo(f"\n{Fore.BLUE}Assistant: {Style.RESET_ALL}", nl=False)
                     collected_content = []
                     for chunk in completion:
                         try:
@@ -290,7 +300,7 @@ def interactive_chat(
                         except Exception:
                             continue
                     typer.echo("\n")
-                    messages.append({"role": "ASSISTANT", "content": "".join(collected_content)})
+                    messages.append({"role": "assistant", "content": "".join(collected_content)})
                 else:
                     completion = client.chat.completions.create(
                         model=groq_model,
@@ -300,14 +310,18 @@ def interactive_chat(
                         stream=False,
                     )
                     content = completion.choices[0].message.content
-                    typer.echo(f"\n{Fore.BLUE}ASSISTANT: {Style.RESET_ALL}" + content)
-                    messages.append({"role": "ASSISTANT", "content": content})
+                    typer.echo(f"\n{Fore.BLUE}Assistant: {Style.RESET_ALL}" + content)
+                    messages.append({"role": "assistant", "content": content})
+                # Reset text for next input
+                text = None
             except Exception as e:
                 typer.echo(f"{Fore.RED}Error with Groq API: {str(e)}{Style.RESET_ALL}")
                 if "invalid_api_key" in str(e).lower():
                     typer.echo(f"{Fore.RED}Please check your Groq API key.{Style.RESET_ALL}")
                 elif "rate_limit" in str(e).lower():
                     typer.echo(f"{Fore.RED}Rate limit exceeded. Please wait a moment before trying again.{Style.RESET_ALL}")
+                # Reset text on error
+                text = None
         else:
             typer.echo(f"{Fore.RED}Invalid model type. Please use 'openai', 'groq', or 'image'.{Style.RESET_ALL}")
             continue
