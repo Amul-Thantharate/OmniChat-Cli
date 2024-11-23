@@ -5,3 +5,6 @@ openai==0.28
 colorama
 requests
 Pillow
+fpdf2
+markdown2
+rich

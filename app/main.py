@@ -11,6 +11,10 @@ from datetime import datetime
 import requests
 from PIL import Image
 from io import BytesIO
+from fpdf import FPDF
+import markdown2
+from rich.markdown import Markdown
+from rich.console import Console
 load_dotenv()
 
 # Initialize colorama
@@ -35,7 +39,7 @@ USER_ICON = "👤"
 ASSISTANT = "🤖"
 app = typer.Typer()
 
-def save_chat_history(messages, model_type, save_path=None, custom_filename=None):
+def save_chat_history(messages, model_type, save_path=None, custom_filename=None, export_format='json'):
     if save_path:
         # Handle both file and directory paths
         if os.path.splitext(save_path)[1]:  # If path has extension, treat as file
@@ -66,11 +70,71 @@ def save_chat_history(messages, model_type, save_path=None, custom_filename=None
     # Create directory if it doesn't exist
     os.makedirs(save_dir, exist_ok=True)
     
-    # Save messages to file
-    with open(filename, "w", encoding="utf-8") as f:
-        json.dump(messages, f, indent=2, ensure_ascii=False)
-    
-    return filename
+    # Handle different export formats
+    if export_format.lower() == 'pdf':
+        output_file = os.path.join(save_dir, f"{os.path.splitext(filename)[0]}.pdf")
+        return export_to_pdf(messages, output_file)
+    elif export_format.lower() == 'markdown':
+        output_file = os.path.join(save_dir, f"{os.path.splitext(filename)[0]}.md")
+        return export_to_markdown(messages, output_file)
+    else:  # default to JSON
+        with open(filename, "w", encoding="utf-8") as f:
+            json.dump(messages, f, indent=2, ensure_ascii=False)
+        return filename
+
+def export_to_markdown(messages, output_file):
+    """Export chat history to a Markdown file."""
+    try:
+        with open(output_file, 'w', encoding='utf-8') as f:
+            f.write("# Chat History\n\n")
+            f.write(f"Generated on: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n\n")
+            
+            for msg in messages:
+                role = msg.get('role', 'USER').upper()
+                icon = USER_ICON if role == 'USER' else ASSISTANT
+                content = msg.get('content', '')
+                
+                f.write(f"### {icon} {role}\n\n")
+                f.write(f"{content}\n\n")
+                f.write("---\n\n")
+        
+        return output_file
+    except Exception as e:
+        raise Exception(f"Failed to export to Markdown: {str(e)}")
+
+def export_to_pdf(messages, output_file):
+    """Export chat history to a PDF file."""
+    try:
+        pdf = FPDF()
+        pdf.add_page()
+        
+        # Title
+        pdf.set_font('Helvetica', size=16)
+        pdf.cell(0, 10, 'Chat History', ln=True, align='C')
+        pdf.set_font('Helvetica', size=10)
+        pdf.cell(0, 10, f"Generated on: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}", ln=True)
+        pdf.ln(10)
+        
+        # Content
+        pdf.set_font('Helvetica', size=12)
+        for msg in messages:
+            role = msg.get('role', 'USER').upper()
+            icon = USER_ICON if role == 'USER' else ASSISTANT
+            content = msg.get('content', '')
+            
+            # Role header
+            pdf.set_text_color(0, 0, 255 if role == 'USER' else 128)
+            pdf.cell(0, 10, f"{icon} {role}:", ln=True)
+            
+            # Message content
+            pdf.set_text_color(0, 0, 0)
+            pdf.multi_cell(0, 10, content)
+            pdf.ln(5)
+        
+        pdf.output(output_file)
+        return output_file
+    except Exception as e:
+        raise Exception(f"Failed to export to PDF: {str(e)}")
 
 def generate_image(prompt: str, output_dir: str = "generated_images") -> str:
     """Generate an image from a text prompt"""
@@ -112,7 +176,8 @@ def interactive_chat(
     openai_model: Optional[str] = typer.Option(OPENAI_MODEL, "--openai-model", "-o", help="Model to use for generating responses"),
     groq_model: Optional[str] = typer.Option(GROQ_MODEL, "--groq-model", "-g", help="Model to use for generating responses from Groq"),
     save_history: Optional[bool] = typer.Option(False, "--save", "-s", help="Save chat history to a file"),
-    image_dir: Optional[str] = typer.Option(None, "--image-dir", "-i", help="Directory to save generated images")
+    image_dir: Optional[str] = typer.Option(None, "--image-dir", "-i", help="Directory to save generated images"),
+    export_format: Optional[str] = typer.Option("json", "--format", "-f", help="Export format for chat history (json, pdf, markdown)")
 ):
     if model_type.lower() == "image" and not image_api_url:
         typer.echo(f"{Fore.RED}Error: APP_URL environment variable is not set for image generation.{Style.RESET_ALL}")
@@ -143,7 +208,7 @@ def interactive_chat(
                     f"{Fore.YELLOW}Enter filename for chat history (press Enter for default timestamp){Style.RESET_ALL}",
                     default=""
                 )
-                filename = save_chat_history(messages, model_type, custom_path, custom_filename)
+                filename = save_chat_history(messages, model_type, custom_path, custom_filename, export_format)
                 typer.echo(f"{Fore.GREEN}Chat history saved to: {Fore.CYAN}{filename}{Style.RESET_ALL}")
             typer.echo(f"{Fore.GREEN}Thanks for {'generating images' if model_type.lower() == 'image' else 'chatting'}!{Style.RESET_ALL}")
             break
