@@ -2,6 +2,8 @@
 
 A powerful CLI tool that combines multiple AI models (OpenAI, Groq) for chat, image generation, and content creation. Features streaming responses, conversation history, and multi-format exports.
 
+📚 [View Full Documentation](https://amul-thantharate.github.io/omenicli/)
+
 ## ✨ Features
 
 ### AI Providers
@@ -42,14 +44,15 @@ A powerful CLI tool that combines multiple AI models (OpenAI, Groq) for chat, im
 
 ## 📦 Installation
 
-1. Clone the repository:
+### From PyPI
+```bash
+pip install omenicli
+```
+
+### From Source
 ```bash
 git clone https://github.com/Amul-Thantharate/OmniChat-Cli.git
 cd OmniChat-Cli
-```
-
-2. Install the package:
-```bash
 pip install -e .
 ```
 

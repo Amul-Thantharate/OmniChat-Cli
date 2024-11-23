@@ -44,6 +44,12 @@ To use OmniChat, you'll need to obtain API keys from the following services:
 
 ## Installation
 
+### From PyPI
+```bash
+pip install omenicli
+```
+
+### From Source
 ```bash
 git clone https://github.com/yourusername/OmniChat.git
 cd OmniChat
