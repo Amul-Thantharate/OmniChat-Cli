@@ -35,6 +35,13 @@ To use OmniChat, you'll need to obtain API keys from the following services:
 4. Generate new API key
 5. Copy and save the key securely
 
+### Airforce Api Key
+1. Visit [Airforce](https://api.airforce/)
+2. Create an account or sign in
+3. Go to API section
+4. Generate new API key
+5. Copy and save the key securely
+
 ## Installation
 
 ```bash
@@ -43,15 +50,33 @@ cd OmniChat
 pip install -r requirements.txt
 ```
 
-## Configuration
+### Exporting API Keys
 
-1. Create a `.env` file in the root directory
-2. Add your API keys:
-```env
-OPENAI_API_KEY=your_openai_key_here
-DISCORD_TOKEN=your_discord_token_here
-TELEGRAM_TOKEN=your_telegram_token_here
+#### Windows
+Using Command Prompt:
+```cmd
+set OPENAI_API_KEY=your_openai_key_here
+set GROQ_API_KEY=your_groq_key_here
+set APP_URL=your_image_generation_api_url
 ```
+
+Using PowerShell:
+```powershell
+$env:OPENAI_API_KEY="your_openai_key_here"
+$env:GROQ_API_KEY="your_groq_key_here"
+$env:APP_URL="your_image_generation_api_url"
+```
+
+#### Linux/macOS
+```bash
+export OPENAI_API_KEY="your_openai_key_here"
+export GROQ_API_KEY="your_groq_key_here"
+export APP_URL="your_image_generation_api_url"
+```
+
+To make these permanent:
+1. For Linux/macOS: Add to `~/.bashrc` or `~/.zshrc`
+2. For Windows: Add through System Properties > Environment Variables
 
 ## Usage
 
@@ -171,6 +196,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
   - Send text and images in the same prompt
   - Image-to-text capabilities (image description)
   - Custom prompt templates
+  - Adding Replicate AI or Together AI for image generation
 - Conversation Management
   - View past conversations
   - Conversation summarization
