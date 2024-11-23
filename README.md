@@ -40,10 +40,6 @@ A powerful command-line interface for interacting with AI models and generating 
   - Groq API key
   - Image Generation API URL
 
-##  🌟 Image Demo
-
-![Image Demo](https://github.com/Amul-Thantharate/OmniChat-Cli/blob/master/Image/Image.png)
-
 ## 📦 Installation
 
 1. Clone the repository:
