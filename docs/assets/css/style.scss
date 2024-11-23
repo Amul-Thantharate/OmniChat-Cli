@@ -1,0 +1,83 @@
+---
+---
+
+@import "{{ site.theme }}";
+
+// Custom dark theme styles
+body {
+  background: #1a1a1a;
+  color: #e6e6e6;
+}
+
+a {
+  color: #58a6ff;
+  &:hover {
+    color: #79c0ff;
+  }
+}
+
+h1, h2, h3, h4, h5, h6 {
+  color: #79c0ff;
+}
+
+code {
+  background: #2a2a2a;
+  color: #79c0ff;
+  padding: 2px 5px;
+  border-radius: 3px;
+}
+
+pre {
+  background: #2a2a2a;
+  border: 1px solid #404040;
+  padding: 15px;
+  border-radius: 5px;
+  overflow-x: auto;
+}
+
+table {
+  background: #2a2a2a;
+  border: 1px solid #404040;
+  th {
+    background: #333;
+    color: #fff;
+  }
+  td {
+    border: 1px solid #404040;
+  }
+}
+
+blockquote {
+  border-left: 3px solid #404040;
+  color: #b3b3b3;
+}
+
+// Custom styles for emoji headers
+.emoji-header {
+  font-size: 1.5em;
+  margin-right: 10px;
+}
+
+// Better visibility for inline code
+p code {
+  color: #ff7b72;
+}
+
+// Custom styles for command examples
+.command-example {
+  background: #2a2a2a;
+  border-left: 4px solid #58a6ff;
+  padding: 15px;
+  margin: 20px 0;
+}
+
+// Better contrast for links in navigation
+nav {
+  a {
+    color: #79c0ff;
+    &:hover {
+      color: #58a6ff;
+      text-decoration: none;
+    }
+  }
+}
