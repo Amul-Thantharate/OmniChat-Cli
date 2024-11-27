@@ -11,7 +11,8 @@ from datetime import datetime
 import requests
 from PIL import Image
 from io import BytesIO
-from fpdf import FPDF, XPos, YPos
+from fpdf import FPDF
+from fpdf.enums import XPos, YPos
 import markdown2
 from rich.markdown import Markdown
 from rich.console import Console
